@@ -153,8 +153,8 @@ def compile_func(gen: 'Generator', func: Callable, strategy: Strategy, with_hook
             if not with_hooks:
                 n.func = astutils.parse(f"{_GEN_STRATEGY_VAR}.generic_op").value
             else:
-                n.keywords.append(ast.keyword(arg=_GEN_HOOK_VAR, value=ast.Name(_GEN_HOOK_VAR, ctx=ast.Load())))
-                n.keywords.append(ast.keyword(arg=_GEN_STRATEGY_VAR, value=ast.Name(_GEN_STRATEGY_VAR, ctx=ast.Load())))
+                n.keywords.append(ast.keyword(arg=_GEN_HOOK_VAR, value=ast.Name(_GEN_HOOK_VAR, ast.Load())))
+                n.keywords.append(ast.keyword(arg=_GEN_STRATEGY_VAR, value=ast.Name(_GEN_STRATEGY_VAR, ast.Load())))
 
                 n.func.id = _GEN_HOOK_WRAPPER
                 ops[_GEN_HOOK_WRAPPER] = hook_wrapper
@@ -170,7 +170,7 @@ def compile_func(gen: 'Generator', func: Callable, strategy: Strategy, with_hook
             #  Similar in spirit to the known_ops case, just much less fancy stuff to do.
             #  Only need to get the right handler which we will achieve by simply making this
             #  a method call instead of a regular call.
-            n.func = ast.Attribute(value=ast.Name(_GEN_STRATEGY_VAR, ctx=ast.Load()), attr=n.func.id, ctx=ast.Load())
+            n.func = ast.Attribute(value=ast.Name(_GEN_STRATEGY_VAR, ast.Load()), attr=n.func.id, ctx=ast.Load())
             ast.fix_missing_locations(n)
 
         elif isinstance(n, ast.Call):
